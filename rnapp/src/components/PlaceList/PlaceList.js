@@ -4,11 +4,11 @@ import {FlatList,StyleSheet} from 'react-native';
 //what does only render what needs to be rendered?FlatList -> the best solution to render any list
 //Also availabel: Section List. List with sections and these sections also have lists?
 
-import ListItem from './ListItem/ListItem';
+import ListItem from '../ListItem/ListItem';
 
 const listItems= (props) =>
 {
-    //Data must be an Array of Objects with a key property!
+    //Data must be an Array of Objects with a key property!{key: adfadddd, value: 12}
     return <FlatList
                 style={styles.listItems}
                 data={props.places}
