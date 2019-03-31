@@ -1,3 +1,5 @@
 export const ADD_PLACE= 'ADD_PLACE';
 export const DELETE_PLACE= 'DELETE_PLACE';
+export const CHANGE_PLACE_NAME= 'CHANGE_PLACE_NAME';
+export const CHANGE_PLACE_IMAGE= 'CHANGE_PLACE_IMAGE';
 

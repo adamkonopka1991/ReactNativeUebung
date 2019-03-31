@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
-import {View, Text, TextInput, Button, ScrollView, StyleSheet, Image} from 'react-native';
+import {View, ScrollView, StyleSheet, Image} from 'react-native';
 import {connect} from 'react-redux';
 
 import { addPlace } from '../../store/actions/index';
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import MainText from "../../components/UI/MainText/MainText";
 import HeadingText from "../../components/UI/HeadingText/HeadingText";
+import ChooseImage from "../../components/ChooseImage/ChooseImage";
+import ChooseLocation from "../../components/ChooseLocation/ChooseLocation";
+import ChooseLocationName from "../../components/ChooseLocationName/ChooseLocationName";
+import StandardButton from "../../components/UI/StandardButton/StandardButton";
 import imagePlaceHolder from "../../assets/15_frauenkirche_2.jpg";
 
 class SharePlaceScreen extends Component {
@@ -26,8 +30,8 @@ class SharePlaceScreen extends Component {
         }
     }
 
-    placeAddedHandler = placeName => {
-        this.props.onAddPlace(placeName)
+    placeAddedHandler = () => {
+        this.props.onAddPlace()
     }
 
     render () {
@@ -39,18 +43,10 @@ class SharePlaceScreen extends Component {
                             Share a Place with us!
                         </HeadingText>
                     </MainText>
-                    <View style={styles.placeholder}><Image source={imagePlaceHolder} style={styles.previewImage} /></View>
-                    <View style={styles.button}>
-                        <Button title="Pick Image" />
-                    </View>
-                    <View style={styles.placeholder}><Text>Map</Text></View>
-                    <View style={styles.button}>
-                        <Button title="Locate Me" />
-                    </View>
-                    <DefaultInput placeholder="Place Name" />
-                    <View style={styles.button}>
-                        <Button title="Share the place!" />
-                    </View>
+                    <ChooseImage/>
+                    <ChooseLocation />
+                    <ChooseLocationName />
+                    <StandardButton title="Share Place!!" onPress={()=>this.placeAddedHandler()}/>
                 </View>
             </ScrollView>
         );//view in scrollview: otherwise scrolling is not working for android.
@@ -80,7 +76,7 @@ const styles= StyleSheet.create({
 
 const mapDispatchToProps= dispatch => {
     return {
-        onAddPlace: (placeName) => dispatch(addPlace(placeName))
+        onAddPlace: () => dispatch(addPlace())
     };
 };
 
