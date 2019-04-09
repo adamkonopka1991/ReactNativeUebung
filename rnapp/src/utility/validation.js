@@ -21,12 +21,7 @@ const validate= (val,rules, connectedValue) =>
     return isValid;
 };
 
-const emailValidator= val =>
-{
-    return /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
-        val
-        );
-};
+
 
 const minLengthValidator= (val,minLength)=>
 {
@@ -36,6 +31,15 @@ const minLengthValidator= (val,minLength)=>
 const equalToValidator= (val,checkValue)=>
 {
     return val===checkValue;
+};
+
+
+
+const emailValidator= val =>
+{
+    return /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
+        val
+        );
 };
 
 export default validate;

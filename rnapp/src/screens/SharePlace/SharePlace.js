@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TextInput, Button, ScrollView, StyleSheet, Image} from 'react-native';
+import {View, Text, TextInput, Button, ScrollView, StyleSheet, Image, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {connect} from 'react-redux';
 
 import { addPlace } from '../../store/actions/index';
@@ -8,6 +8,8 @@ import MainText from "../../components/UI/MainText/MainText";
 import HeadingText from "../../components/UI/HeadingText/HeadingText";
 import PickImage from "../../components/PickImage/PickImage";
 import PickLocation from "../../components/PickLocation/PickLocation";
+import DefaultInput from "../../components/UI/DefaultInput/DefaultInput";
+import validate from "../../utility/validation";
 
 
 class SharePlaceScreen extends Component {
@@ -16,7 +18,16 @@ class SharePlaceScreen extends Component {
     }
 
     state= {
-        placeName: ""
+        controls:{
+            placeName:{
+                value: "",
+                validationRules:{
+                    minLength: 3
+                },
+                valid: false,
+                touched: false
+            }
+        }
     };
     constructor(props) {
         super(props);
@@ -35,38 +46,56 @@ class SharePlaceScreen extends Component {
         }
     }
 
-    placeNameChangedHandler= val =>
+    inputChangedHandler= (value,key) =>
     {
-        this.setState({
-            placeName: val
-        });
+        this.setState(prevState =>{
+            return {
+                controls: {
+                    ...prevState.controls,
+                    [key]:{
+                        ...prevState.controls[key],
+                        value: value,
+                        valid: validate(value,this.state.controls[key].validationRules),
+                        touched: true
+                    }
+                }
+            }
+        })
     }
 
+
     placeAddedHandler = () => {
-        if(this.state.placeName.trim() !== "" )
+        if(this.state.controls.placeName.value.trim() !== "" )
         {
-            this.props.onAddPlace(this.state.placeName);
+            this.props.onAddPlace(this.state.controls.placeName.value);
         }    
     }
 
     render () {
         return(
             <ScrollView>
-                <View style={styles.container}>
-                    <MainText>
-                        <HeadingText>
-                            Share a Place with us!
-                        </HeadingText>
-                    </MainText>
-                    <PickImage />
-                    <PickLocation />
-                    <PlaceInput 
-                        placeName={this.state.placeName} 
-                        onChangeText={this.placeNameChangedHandler} />
-                    <View style={styles.button}>
-                        <Button title="Share the place!" onPress={this.placeAddedHandler} />
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <View style={styles.container}>
+                        <MainText>
+                            <HeadingText>
+                                Share a Place with us!
+                            </HeadingText>
+                        </MainText>
+                        <PickImage />
+                        <PickLocation />
+                        <DefaultInput
+                            value={this.state.controls.placeName.value} 
+                            onChangeText={(value)=>this.inputChangedHandler(value, "placeName")}
+                            valid={this.state.controls.placeName.valid}
+                            touched={this.state.controls.placeName.touched} />
+                        <View style={styles.button}>
+                            <Button 
+                                title="Share the place!" 
+                                onPress={this.placeAddedHandler}
+                                disabled={!this.state.controls.placeName.valid} />
+                        </View>
                     </View>
-                </View>
+                </TouchableWithoutFeedback>
             </ScrollView>
         );//view in scrollview: otherwise scrolling is not working for android.
     }
