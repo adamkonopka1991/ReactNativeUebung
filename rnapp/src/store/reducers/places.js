@@ -16,7 +16,8 @@ const reducer= (state= initialState,action) =>
                     name: action.placeName,
                     image: {
                       uri: "https://blog.365tickets.de/wp-content/uploads/sites/7/2018/03/469345bddb59b1a4cf41dc39ca2a7342-335x160.jpg"
-                    }
+                    },
+                    location: action.location
                 })
             };
 
