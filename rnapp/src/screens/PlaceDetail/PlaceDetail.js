@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {View, Image, Text, Button, StyleSheet, TouchableOpacity, Platform, Dimensions} from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MapView from 'react-native-maps';
+
+
 import {deletePlace} from '../../store/actions/index';
 
 class PlaceDetail extends Component {
@@ -34,6 +37,13 @@ class PlaceDetail extends Component {
     }
 
     render(){
+        //chosen location:
+        let focusedLocation ={
+            latitude: this.props.selectedPlace.location.latitude,
+            longitude: this.props.selectedPlace.location.longitude,
+            latitudeDelta: 0.0122,
+            longitudeDelta: Dimensions.get("window").width / Dimensions.get("window").height * 0.0122
+        };
         return (
             //onRequestClosed is just relevant for Android. clicking the bakc- button closes the modal!
                 
@@ -45,6 +55,13 @@ class PlaceDetail extends Component {
                     <Image source={this.props.selectedPlace.image} style={styles.placeImage} />
                 </View>
                 <View style={styles.subContainer}>
+                    <MapView
+                        style={styles.map}
+                        initialRegion={focusedLocation}>
+                        <MapView.Marker coordinate={focusedLocation}/>
+                    </MapView>
+                </View>
+                <View style={[styles.subContainer,styles.subContainerSmall]}>
                     <View>
                         <Text style={styles.placeName}>{this.props.selectedPlace.name}</Text>
                     </View>
@@ -68,7 +85,8 @@ class PlaceDetail extends Component {
 const styles= StyleSheet.create({
     container: {
         margin: 22,
-        flex: 1
+        flex: 1,
+        justifyContent: "space-between"
     },
     portraitContainer:{
         flexDirection: "column"
@@ -77,7 +95,13 @@ const styles= StyleSheet.create({
         flexDirection: "row"
     },
     subContainer: {
-        flex: 1
+        flex: 1,
+        margin: 10,
+        overflow: "hidden",
+        width: "100%"
+    },
+    subContainerSmall:{
+        flex: 0.5
     },
     placeImage: {
         height: 200,
@@ -90,6 +114,10 @@ const styles= StyleSheet.create({
     },
     deleteButton: {
         alignItems: "center"
+    },
+    map: {
+        height: 200,
+        width: "100%"
     }
 });
 
